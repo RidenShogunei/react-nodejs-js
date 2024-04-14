@@ -1,75 +1,96 @@
-import React, { useState } from "react";
-import { Select, Input, Button, Layout } from "antd";
-import axios from "axios";
-import "./index.css";
-function MainPage() {
-  const ICP = "沪ICP备202405831号";
-  const [engine, setEngine] = useState("baidu");
-  const [query, setQuery] = useState("");
-  const [amount, setamount] = useState("");
-  const { Header, Content, Footer } = Layout;
-  const handleEngineChange = (value) => setEngine(value);
-  const handleQueryChange = (e) => setQuery(e.target.value);
-  const handleAmountChang = (num) => setamount(num.target.value);
-  const handleSearch = async () => {
-    try {
-      const result = await axios.post("/search", { engine, query });
-      console.log(result.data);
-    } catch (error) {
-      console.error(error);
-    }
+import React, { useState } from 'react';
+import { Button, Layout, Menu } from 'antd';
+import {
+  AppstoreOutlined,
+  ContainerOutlined,
+  DesktopOutlined,
+  MailOutlined,
+  MenuFoldOutlined,
+  MenuUnfoldOutlined,
+  PieChartOutlined,
+} from '@ant-design/icons';
+import Footerpart from './components/footer/footer'
+import styles from './index.module.css';
+const { Header, Content, Footer } = Layout;
+function getItem(label, key, icon, children, type) {
+  return {
+    key,
+    icon,
+    children,
+    label,
+    type,
   };
-
+}
+const items = [
+  getItem('文件存储', '1', <PieChartOutlined />),
+  getItem('音频存储', '2', <DesktopOutlined />),
+  getItem('视频存储', '3', <ContainerOutlined />),
+  getItem('数据管理', 'sub1', <MailOutlined />, [
+    getItem('文件管理', '5'),
+    getItem('音频管理', '6'),
+    getItem('视频管理', '7'),
+    getItem('总体管理', '8'),
+  ]),
+  getItem('个人中心', 'sub2', <AppstoreOutlined />, [
+    getItem('数据展示', '9'),
+    getItem('个人信息', '10'),
+  ]),
+];
+const App = () => {
+  const [collapsed, setCollapsed] = useState(false);
+  const toggleCollapsed = () => {
+    setCollapsed(!collapsed);
+  };
   return (
-    <div className="search">
-      <Layout>
-        <Header style={{ display: "flex", alignItems: "center" }}>
-          <div className="demo-logo" />
-        </Header>
-        <Content style={{ padding: "0 48px" }}>
+    <Layout className={styles.main}>
+      <Header
+        style={{
+          position: 'sticky',
+          top: 0,
+          zIndex: 1,
+          width: '100%',
+          display: 'flex',
+          alignItems: 'center',
+          flexDirection: 'column'
+        }}
+      >
+        <div className={styles.title}>数据存储系统</div>
+      </Header>
+      <Content >
+        <div className={styles.content}>
           <div
             style={{
-              background: "#f0f2f5",
-              minHeight: 280,
-              padding: 24,
-              borderRadius: 4,
+              width: 256,
             }}
           >
-            <div className="input">
-              <Select
-                defaultValue="word"
-                style={{ width: 120 }}
-                onChange={handleEngineChange}
-              >
-                <Select.Option value="word">文字</Select.Option>
-                <Select.Option value="picture">图片</Select.Option>
-                <Select.Option value="video">视频</Select.Option>
-              </Select>
-              <Input type="text" value={query} onChange={handleQueryChange} />
-              <Input
-                type="number"
-                value={amount}
-                onChange={handleAmountChang}
-              />
-              <Button type="primary" onClick={handleSearch}>
-                搜索
-              </Button>
-            </div>
-            <div className="show"></div>
+            <Button
+              type="primary"
+              onClick={toggleCollapsed}
+              style={{
+                marginBottom: 16,
+              }}
+            >
+              {collapsed ? <MenuUnfoldOutlined /> : <MenuFoldOutlined />}
+            </Button>
+            <Menu
+              defaultSelectedKeys={['1']}
+              defaultOpenKeys={['sub1']}
+              mode="inline"
+              theme="dark"
+              inlineCollapsed={collapsed}
+              items={items}
+            />
           </div>
-        </Content>
-        <Footer style={{ textAlign: "center" }}>
-          <a
-            href="https://beian.miit.gov.cn"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            {ICP}
-          </a>
-        </Footer>
-      </Layout>
-    </div>
+        </div>
+      </Content>
+      <Footer
+        style={{
+          textAlign: 'center',
+        }}
+      >
+        <Footerpart></Footerpart>
+      </Footer>
+    </Layout>
   );
-}
-
-export default MainPage;
+};
+export default App;
