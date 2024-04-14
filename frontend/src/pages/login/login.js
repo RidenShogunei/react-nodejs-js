@@ -1,10 +1,11 @@
-import React from "react";
-import { useState } from 'react';
+import React, {useContext, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { Form, Input, Button, Card ,message} from "antd";
 import styles from './login.module.css';
 import api from '../../api/login'
+import { AuthContext } from "../../context/AuthContext";
 const LoginForm = () => {
+  const { setIsAuthenticated } = useContext(AuthContext);
   const [name, setname] = useState('');
   const [password, setpassword] = useState('');
   const navigate = useNavigate();
@@ -22,6 +23,7 @@ const LoginForm = () => {
       console.log("登录的结果", result)
       if (result.data && result.data !== 'fail') {
         message.success("登陆成功!!")
+        setIsAuthenticated(true); 
         localStorage.setItem('uid', result.data)
         navigate('/home')
       } else {
