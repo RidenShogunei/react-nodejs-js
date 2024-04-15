@@ -19,8 +19,18 @@
 }
 .content {
   width: 100vw;
-  height: 85vh;
+  height: 100vh;
   display: flex;
   align-items: center;
   justify-content: flex-start;
+}
+.sider {
+  height: 100%;
+}
+.detile{
+  display: flex;
+  justify-content: center;
+  position: fixed;
+  top:20%;
+  left:30%;
 }

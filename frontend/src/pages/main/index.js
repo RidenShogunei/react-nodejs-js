@@ -25,8 +25,10 @@ const App = () => {
       </Header>
       <Content>
         <div className={styles.content}>
+          <div className={styles.sider}>
           <Sider></Sider>
-          <div>
+          </div>
+          <div className={styles.detile}>
             <Routes>
               <Route path="document" element={<Doc />} />
               <Route path="sound" element={<Sound />} />
