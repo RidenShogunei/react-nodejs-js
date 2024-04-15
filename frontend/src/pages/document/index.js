@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { InboxOutlined } from "@ant-design/icons";
 import { message, Upload } from "antd";
 import api from "../../api/document"; // 引入你写的api
-
+import styles from './index.module.css'
 const { Dragger } = Upload;
 
 const App = () => {
@@ -12,15 +12,14 @@ const App = () => {
     setFileList(fileList);
     if (file.status === "uploading") {
     } else if (file.status === "done") {
-     
     }
   };
   const handleUpload = async ({ file, onSuccess, onError }) => {
     const uid = localStorage.getItem("uid");
 
     const response = await api.sendDocument(uid, file);
- // 文件上传成功，调用api
- console.log("上传", file);
+    // 文件上传成功，调用api
+    console.log("上传", file);
     if (response.error) {
       console.error("上传文件时发生错误：", response.error);
       message.error(`上传文件时发生错误：${response.error}`);
@@ -38,6 +37,7 @@ const App = () => {
     message.error(`上传文件时发生错误：${error}`);
   };
   return (
+    <div className={styles.detile}>
     <Dragger
       name="file"
       multiple={true}
@@ -46,7 +46,7 @@ const App = () => {
       onDrop={onDrop}
       onError={onError}
       action="#" // 从"/api/document"文件中找到这个URL，并填到这里来
-      customRequest={handleUpload}
+      customRequest={handleUpload} 
     >
       <p className="ant-upload-drag-icon">
         <InboxOutlined />
@@ -56,6 +56,7 @@ const App = () => {
         支持单个或批量上传. 严禁上传公司数据及其他禁止的文件.
       </p>
     </Dragger>
+    </div>
   );
 };
 

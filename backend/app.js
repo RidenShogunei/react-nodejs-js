@@ -5,17 +5,18 @@ const mysql = require('mysql');
 const fs = require('fs');
 const https = require('https');
 const WebSocket = require('ws');
-
+const path = require('path');
 const privateKey = fs.readFileSync('/etc/nginx/ssl/chenjinxu.top.key', 'utf8');
 const certificate = fs.readFileSync('/etc/nginx/ssl/chenjinxu.top.pem', 'utf8');
 
 const app = express();
 
 const conn = mysql.createConnection({
-  user:'blog',          //用户名
-  password:'chen2003',  //密码
-  host:'47.96.160.149',     //主机（默认都是local host）
-  database:'fiveth'     //数据库名
+  user:'',          //用户名
+  password:'',  //密码
+  host:'',     //主机（默认都是local host）
+  database:''  ,   //数据库名
+  charset : 'utf8mb4' 
 });
 
 app.use(cors());
@@ -34,8 +35,13 @@ conn.connect(err => {
     // 连接成功后导入路由
     const loginRouter = require('./modle/login')(conn);
     const registerdRouter = require('./modle/register')(conn);
+    const getconfirmRouter = require('./modle/getconfirm')(conn);
+    const documentRouter = require('./modle/document')(conn);
     app.use('/login', loginRouter);
     app.use('/register', registerdRouter);
+    app.use('/getconfirm', getconfirmRouter);
+    app.use('/document', documentRouter);
+    app.use('/document/uploads', express.static(path.join(__dirname, 'uploads')));
   }
 });
 

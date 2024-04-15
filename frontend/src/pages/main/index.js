@@ -6,6 +6,8 @@ import Footerpart from "./components/footer/footer";
 import styles from "./index.module.css";
 import Doc from "../document/index";
 import Sound from "../sound/index";
+import Man from "../mangedoc/index";
+import Wel from "./components/welcome/index"
 const { Header, Content, Footer } = Layout;
 const App = () => {
   return (
@@ -26,12 +28,14 @@ const App = () => {
       <Content>
         <div className={styles.content}>
           <div className={styles.sider}>
-          <Sider></Sider>
+            <Sider></Sider>
           </div>
           <div className={styles.detile}>
             <Routes>
+              <Route path="" element={<Wel />} />
               <Route path="document" element={<Doc />} />
               <Route path="sound" element={<Sound />} />
+              <Route path="manage" element={<Man />} />
             </Routes>
           </div>
         </div>

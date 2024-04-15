@@ -25,10 +25,9 @@ const items = [
   getItem("音频存储", "2", <DesktopOutlined />, null, null, "sound"),
   getItem("视频存储", "3", <ContainerOutlined />, null, null, "/video-storage"),
   getItem("数据管理", "sub1", <MailOutlined />, [
-    getItem("文件管理", "5", null, null, null, "/data-management/file"),
+    getItem("文件管理", "5", null, null, null, "manage"),
     getItem("音频管理", "6", null, null, null, "/data-management/audio"),
     getItem("视频管理", "7", null, null, null, "/data-management/video"),
-    getItem("总体管理", "8", null, null, null, "/data-management/all"),
   ]),
   getItem("个人中心", "sub2", <AppstoreOutlined />, [
     getItem("数据展示", "9", null, null, null, "/personal-center/data-display"),
