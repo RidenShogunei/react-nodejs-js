@@ -60,7 +60,7 @@ function ProtectedRoute({ children }) {
 const routes = [
   { path: "/", element: <Login /> },
   { path: "/home/*", element: <Home /> },
-  { path: "/register", element: <Register /> },
+  { path: "/rigester", element: <Register /> },
 ];
 function App() {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
