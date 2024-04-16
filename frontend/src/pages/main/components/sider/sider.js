@@ -30,7 +30,7 @@ const items = [
     getItem("视频管理", "7", null, null, null, "managevideo"),
   ]),
   getItem("个人中心", "sub2", <AppstoreOutlined />, [
-    getItem("数据展示", "9", null, null, null, "analysis"),
+    getItem("数据展示", "8", null, null, null, "analysis"),
   ]),
 ];
 const Sider = () => {

@@ -6,7 +6,9 @@ const UserAnalysis = () => {
   const [barOption, setBarOption] = useState({});
   const [pieOption, setPieOption] = useState({});
   const userId = localStorage.getItem('uid');
-
+  document.addEventListener('click', (event) => {
+    console.log(event.target);
+  });
   useEffect(() => {
     const fetchData = async () => {
       try {
@@ -19,7 +21,7 @@ const UserAnalysis = () => {
           },
           tooltip: {},
           legend: {
-            data:['存储大小(KB)',]
+            data: ['存储大小',]
           },
           xAxis: {
             data: ["文件", "音频", "视频", "总大小"]
@@ -33,27 +35,27 @@ const UserAnalysis = () => {
         };
 
         const pieChartOption = {
-            title : {
-                text: '内存占用比（KB）',
-                x:'center'
-            },
-            tooltip : {
-                trigger: 'item',
-                formatter: "{a} <br/>{b} : {c} ({d}%)"
-            },
-            series : [
-                {
-                    name: '存储大小',
-                    type: 'pie',
-                    radius: '55%',
-                    center: ['50%', '60%'],
-                    data:[
-                        {value:data.fileSizeKB, name:'文件'},
-                        {value:data.audioSizeKB, name:'音频'},
-                        {value:data.videoSizeKB, name:'视频'}
-                    ]
-                }
-            ]
+          title: {
+            text: '内存占用比（KB）',
+            x: 'center'
+          },
+          tooltip: {
+            trigger: 'item',
+            formatter: "{a} <br/>{b} : {c} ({d}%)"
+          },
+          series: [
+            {
+              name: '存储大小',
+              type: 'pie',
+              radius: '55%',
+              center: ['50%', '60%'],
+              data: [
+                { value: data.fileSizeKB, name: '文件' },
+                { value: data.audioSizeKB, name: '音频' },
+                { value: data.videoSizeKB, name: '视频' }
+              ]
+            }
+          ]
         };
 
         setBarOption(barChartOption);
@@ -68,15 +70,17 @@ const UserAnalysis = () => {
   }, []);
 
   return (
+    <div className="echarts-for-react" style={{ pointerEvents: "none" }}>
     <div className={style.detile}>
       <ReactEcharts
         option={barOption}
-        style={{height: '500px', width: '500px'}}
+        style={{ height: '500px', width: '500px' }}
       />
       <ReactEcharts
         option={pieOption}
-        style={{height: '500px', width: '500px'}}
+        style={{ height: '500px', width: '500px' }}
       />
+    </div>
     </div>
   );
 };
