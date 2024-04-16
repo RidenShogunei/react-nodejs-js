@@ -1,15 +1,14 @@
 import React, { useRef, useState } from 'react';
 import { Button, Card, message } from 'antd';
-import { AudioOutlined, UploadOutlined } from '@ant-design/icons';
+import { VideoCameraOutlined, UploadOutlined } from '@ant-design/icons';
 import style from './index.module.css'
-import AudioAnalyser from 'react-audio-analyser';
-import api from '../../api/sound'; //你的音频文件API模块
+import api from '../../api/video'; // 你的视频文件API模块
 
-const Sound = () => {
+const Video = () => {
     const [recording, setRecording] = useState(false);
-    const [audioURL, setAudioURL] = useState(null);
+    const videoRef = useRef(null);
     const mediaRecorderRef = useRef(null);
-    const audioChunksRef = useRef([]);
+    const videoChunksRef = useRef([]);
     const now = new Date();
     const year = now.getFullYear();
     const month = String(now.getMonth() + 1).padStart(2, '0');
@@ -17,21 +16,22 @@ const Sound = () => {
     const hours = String(now.getHours()).padStart(2, '0');
     const minutes = String(now.getMinutes()).padStart(2, '0');
     const seconds = String(now.getSeconds()).padStart(2, '0');
-    const fileName = `${year}${month}${day}_${hours}${minutes}${seconds}.wav`;
+    const fileName = `${year}${month}${day}_${hours}${minutes}${seconds}.webm`;
+
     const startRecording = () => {
-        navigator.mediaDevices.getUserMedia({ audio: true })
+        navigator.mediaDevices.getUserMedia({ audio: true, video: true })
             .then(stream => {
                 mediaRecorderRef.current = new MediaRecorder(stream);
-                audioChunksRef.current = [];
-
+                videoChunksRef.current = [];
+                videoRef.current.srcObject = stream;
                 mediaRecorderRef.current.addEventListener("dataavailable", event => {
                     console.log("dataavailable event has been triggered");
-                    audioChunksRef.current.push(event.data);
+                    videoChunksRef.current.push(event.data);
                 });
                 mediaRecorderRef.current.start(10);
                 setRecording(true);
             }).catch(err => {
-                message.error('获取音频流失败');
+                message.error('获取音频/视频流失败');
                 console.log(err);
             });
     };
@@ -39,25 +39,21 @@ const Sound = () => {
     const stopRecording = () => {
         mediaRecorderRef.current.stop();
         setRecording(false);
-        const audioBlob = new Blob(audioChunksRef.current);
-        console.log("audio data", audioChunksRef.current, audioBlob)
-        const audioURL = URL.createObjectURL(audioBlob);
-        console.log("audio url", audioURL)
-        setAudioURL(audioURL);
+        const videoBlob = new Blob(videoChunksRef.current, { type: 'video/webm' });
+        console.log("video data", videoChunksRef.current, videoBlob)
     };
+
     // 上传文件
-    const uploadAudio = async () => {
+    const uploadVideo = async () => {
         const uid = localStorage.getItem('uid'); // 请替换为实际的uid
-        const file = new File(audioChunksRef.current, fileName, { type: 'audio/wav' });
-        const response = await api.sendAudio(uid, file);
+        const file = new File(videoChunksRef.current, fileName, { type: 'video/webm' });
+        const response = await api.sendVideo(uid, file);
         if (response.error) {
             message.error('上传失败');
         } else {
             message.success('上传成功');
         }
     };
-
-
 
     const handleButtonClick = () => {
         if (recording) {
@@ -66,30 +62,25 @@ const Sound = () => {
             startRecording();
         }
     };
+
     return (
         <>
             <div className={style.main}>
                 <Card>
-                    <AudioAnalyser
-                        audioSrc={audioURL}
-                        visualSetting="sinewave" // 使用正弦波形状
-                        width={500}
-                        height={200}
-                        className={style.show}  // 在此处添加你的 className
-                    />
+                    <video ref={videoRef} autoPlay muted className={style.show}/>
                     <div className={style.bot}>
                         <Button
                             type="primary"
-                            icon={<AudioOutlined />}
+                            icon={<VideoCameraOutlined />}
                             onClick={handleButtonClick}
                         >
-                            {recording ? "停止录音" : "开始录音"}
+                            {recording ? "停止录制" : "开始录制"}
                         </Button>
                         <Button
                             icon={<UploadOutlined />}
-                            onClick={uploadAudio}
+                            onClick={uploadVideo}
                         >
-                            上传音频
+                            上传视频
                         </Button>
                     </div>
                 </Card>
@@ -98,4 +89,4 @@ const Sound = () => {
     );
 };
 
-export default Sound;
+export default Video;

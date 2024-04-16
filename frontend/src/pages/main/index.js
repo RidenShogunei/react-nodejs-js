@@ -8,6 +8,9 @@ import Doc from "../document/index";
 import Sound from "../sound/index";
 import Man from "../mangedoc/index";
 import Wel from "./components/welcome/index"
+import Aud from "../managesound/index"
+import Vid from "../video/index"
+import Mvid from "../managevideo/index"
 const { Header, Content, Footer } = Layout;
 const App = () => {
   return (
@@ -36,6 +39,9 @@ const App = () => {
               <Route path="document" element={<Doc />} />
               <Route path="sound" element={<Sound />} />
               <Route path="manage" element={<Man />} />
+              <Route path="manageaudio" element={<Aud />} />
+              <Route path="video" element={<Vid />} />
+              <Route path="managevideo" element={<Mvid />} />
             </Routes>
           </div>
         </div>
