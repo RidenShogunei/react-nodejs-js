@@ -2,7 +2,7 @@
 import React, { useEffect, useState, useContext } from "react";
 import { useNavigate } from "react-router-dom";
 import {
-  BrowserRouter as Router,
+  HashRouter as Router,  // 修改此处
   Route,
   Routes,
   useLocation,

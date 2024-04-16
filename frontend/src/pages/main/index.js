@@ -11,6 +11,7 @@ import Wel from "./components/welcome/index"
 import Aud from "../managesound/index"
 import Vid from "../video/index"
 import Mvid from "../managevideo/index"
+import Ana from "../getanalysis/index"
 const { Header, Content, Footer } = Layout;
 const App = () => {
   return (
@@ -42,6 +43,7 @@ const App = () => {
               <Route path="manageaudio" element={<Aud />} />
               <Route path="video" element={<Vid />} />
               <Route path="managevideo" element={<Mvid />} />
+              <Route path="analysis" element={<Ana />} />
             </Routes>
           </div>
         </div>
